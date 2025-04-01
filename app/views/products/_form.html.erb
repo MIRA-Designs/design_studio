@@ -21,6 +21,9 @@
     <%= form.rich_textarea :description %>
   </div>
 
+  <%= form.label :images %>
+  <%= form.file_field :images, multiple: true %>
+
   <div>
     <%= form.label :category, style: "display: block" %>
     <%= form.text_field :category %>

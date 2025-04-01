@@ -8,6 +8,16 @@
   </p>
 
   <p>
+    <h3>Product Images:</h3>
+    <% product.images.each do |image| %>
+      <%= image_tag image.variant(:thumb), alt: "Product Image" %>
+    <% end %>
+    <% product.images.each do |image| %>
+      <%= image_tag image, alt: "Product Image" %>
+    <% end %>
+  </p>
+
+  <p>
     <strong>Category:</strong>
     <%= product.category %>
   </p>
