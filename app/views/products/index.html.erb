@@ -1,16 +1,18 @@
-<p style="color: green"><%= notice %></p>
+<p class="text-green-600 font-semibold"><%= notice %></p>
 
 <% content_for :title, "Products" %>
 
-<h1>Products</h1>
-
-<div id="products">
-  <% @products.each do |product| %>
-    <%= render product %>
-    <p>
-      <%= link_to "Show this product", product %>
-    </p>
-  <% end %>
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-3xl font-bold text-gray-800">Products</h1>
+  <%= link_to "New product", new_product_path, class: "inline-block bg-red-400 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-500" %>
 </div>
 
-<%= link_to "New product", new_product_path %>
+<div id="products" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <% @products.each do |product| %>
+    <div class="bg-white shadow-md rounded-lg p-4 border border-gray-200">
+      <%= link_to(product) do %>
+        <%= render product %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

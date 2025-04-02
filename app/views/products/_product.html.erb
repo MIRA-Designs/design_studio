@@ -1,50 +1,39 @@
-<div id="<%= dom_id product %>">
-  <p>
-    <%= product.title %>
+<div id="<%= dom_id product %>" class="p-4 bg-gray-50 rounded-lg shadow-md border border-gray-200 hover:bg-orange-100">
+  <h2 class="text-lg font-semibold text-gray-800"><%= product.title[0..30] %></h2>
+
+  <p class="text-gray-600 mt-2">
+    <%= truncate(product.description.to_plain_text, length: 100, separator: '...') %>
   </p>
 
-  <p>
-    <%= product.description %>
-  </p>
+  <!-- Product Images Section -->
+  <div class="mt-4">
+    <h3 class="text-md font-semibold text-gray-700">Product Images:</h3>
+    <div class="flex flex-wrap gap-2 mt-2">
+      <% product.images.each do |image| %>
+        <%= image_tag image.variant(:thumb), alt: "Product Image", class: "w-24 h-24 object-cover rounded-md border border-gray-300" %>
+      <% end %>
+    </div>
+  </div>
 
-  <p>
-    <h3>Product Images:</h3>
-    <% product.images.each do |image| %>
-      <%= image_tag image.variant(:thumb), alt: "Product Image" %>
-    <% end %>
-    <% product.images.each do |image| %>
-      <%= image_tag image, alt: "Product Image" %>
-    <% end %>
-  </p>
+  <!-- Category, Color, Size -->
+  <div class="mt-4 grid grid-cols-2 gap-4 text-sm text-gray-700">
+    <p><strong>Category:</strong> <%= product.category %></p>
+    <p><strong>Color:</strong> <%= product.color %></p>
+    <p><strong>Size:</strong> <%= product.size %></p>
+  </div>
 
-  <p>
-    <strong>Category:</strong>
-    <%= product.category %>
-  </p>
+  <!-- Pricing Info -->
+  <div class="mt-4">
+    <p class="text-lg font-bold text-gray-800">
+      <span class="line-through text-gray-500">₹<%= product.mrp %></span>
+      <span class="text-red-500 ml-2">₹<%= product.mrp - product.discount %></span>
+    </p>
+    <p class="text-sm text-gray-500">Discount: ₹<%= product.discount %></p>
+  </div>
 
-  <p>
-    <strong>Color:</strong>
-    <%= product.color %>
-  </p>
-
-  <p>
-    <strong>Size:</strong>
-    <%= product.size %>
-  </p>
-
-  <p>
-    <strong>Mrp:</strong>
-    <%= product.mrp %>
-  </p>
-
-  <p>
-    <strong>Discount:</strong>
-    <%= product.discount %>
-  </p>
-
-  <p>
-    <strong>Rating:</strong>
-    <%= product.rating %>
-  </p>
-
+  <!-- Rating -->
+  <div class="mt-2 flex items-center text-yellow-500">
+    <%= "⭐" * product.rating.to_i %>
+    <span class="text-gray-600 ml-2 text-sm"><%= product.rating %>/5</span>
+  </div>
 </div>

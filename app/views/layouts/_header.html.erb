@@ -1,0 +1,74 @@
+<!-- app/views/layouts/_header.html.erb -->
+<header class="bg-orange-500 text-white py-4 shadow-md">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center">
+      <!-- Logo -->
+      <%= link_to root_path, class: 'flex items-center space-x-4 pl-4' do %>
+        <%= image_tag "logo.png", alt: "DS Logo", class: "w-16 h-16" %> <!-- Replace this with your actual logo -->
+        <h1 class="text-2xl font-bold">DS</h1>
+      <% end %>
+      <!-- Navigation Links with Dropdown -->
+      <nav class="flex space-x-8">
+        <div class="relative group">
+          <button class="text-white hover:text-gray-100">Men</button>
+          <div class="absolute left-0 hidden mt-2 space-y-2 bg-white text-black p-4 rounded shadow-md group-hover:block">
+            <%= link_to "Men's Apparel", "#" %>
+            <%= link_to "Men's Shoes", "#" %>
+            <%= link_to "Men's Accessories", "#" %>
+          </div>
+        </div>
+        <div class="relative group">
+          <button class="text-white hover:text-gray-100">Women</button>
+          <div class="absolute left-0 hidden mt-2 space-y-2 bg-white text-black p-4 rounded shadow-md group-hover:block">
+            <%= link_to "Women's Apparel", "#" %>
+            <%= link_to "Women's Shoes", "#" %>
+            <%= link_to "Women's Accessories", "#" %>
+          </div>
+        </div>
+        <div class="relative group">
+          <button class="text-white hover:text-gray-100">Boys</button>
+          <div class="absolute left-0 hidden mt-2 space-y-2 bg-white text-black p-4 rounded shadow-md group-hover:block">
+            <%= link_to "Boys' Apparel", "#" %>
+            <%= link_to "Boys' Shoes", "#" %>
+            <%= link_to "Boys' Accessories", "#" %>
+          </div>
+        </div>
+        <div class="relative group">
+          <button class="text-white hover:text-gray-100">Girls</button>
+          <div class="absolute left-0 hidden mt-2 space-y-2 bg-white text-black p-4 rounded shadow-md group-hover:block">
+            <%= link_to "Girls' Apparel", "#" %>
+            <%= link_to "Girls' Shoes", "#" %>
+            <%= link_to "Girls' Accessories", "#" %>
+          </div>
+        </div>
+        <div class="relative group">
+          <button class="text-white hover:text-gray-100">Infant</button>
+          <div class="absolute left-0 hidden mt-2 space-y-2 bg-white text-black p-4 rounded shadow-md group-hover:block">
+            <%= link_to "Infant's Apparel", "#" %>
+            <%= link_to "Infant's Shoes", "#" %>
+            <%= link_to "Infant's Accessories", "#" %>
+          </div>
+        </div>
+      </nav>
+      <!-- Search Bar -->
+      <div class="flex items-center px-4">
+        <input type="text" placeholder="Search..." class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+      </div>
+      <!-- Profile, Wishlist, Cart Links with Icons -->
+      <div class="flex items-center space-x-6 pr-4">
+        <%= link_to root_path, class: "text-white hover:text-gray-100 text-center" do %>
+          <i class="fas fa-user"></i> <!-- FontAwesome icon -->
+          <span class="block mt-1 text-sm">Profile</span> <!-- Link title -->
+        <% end %>
+        <%= link_to root_path, class: "text-white hover:text-gray-100 text-center" do %>
+          <i class="fas fa-heart"></i> <!-- FontAwesome icon -->
+          <span class="block mt-1 text-sm">Wishlist</span> <!-- Link title -->
+        <% end %>
+        <%= link_to root_path, class: "text-white hover:text-gray-100 text-center" do %>
+          <i class="fas fa-shopping-cart"></i> <!-- FontAwesome icon -->
+          <span class="block mt-1 text-sm">Cart</span> <!-- Link title -->
+        <% end %>
+      </div>
+    </div>
+  </div>
+</header>

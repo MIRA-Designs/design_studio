@@ -1,10 +1,14 @@
-<p style="color: green"><%= notice %></p>
+<p class="text-green-500 mb-4">
+  <%= notice %>
+</p>
 
-<%= render @product %>
-
-<div>
-  <%= link_to "Edit this product", edit_product_path(@product) %> |
-  <%= link_to "Back to products", products_path %>
-
-  <%= button_to "Destroy this product", @product, method: :delete %>
+<div class="mt-6 space-x-4">
+  <%= link_to "Edit this product", edit_product_path(@product), class: "text-blue-600 hover:text-blue-700 font-medium transition duration-300 transform hover:scale-105" %> |
+  <%= link_to "Destroy this product", @product, method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:text-red-700 font-medium transition duration-300 transform hover:scale-105" %>
+  <%= link_to "Back to products", products_path, class: "inline-block bg-red-400 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 float-right" %>
 </div>
+<br>
+
+<%= render @product, class: "animate-fade-in-up" %>
+
+<br>
