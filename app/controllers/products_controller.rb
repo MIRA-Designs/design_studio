@@ -1,9 +1,10 @@
 class ProductsController < ApplicationController
+  include Pagy::Backend
   before_action :set_product, only: %i[ show edit update destroy ]
 
   # GET /products or /products.json
   def index
-    @products = Product.all
+    @pagy, @products = pagy(Product.all)
   end
 
   # GET /products/1 or /products/1.json
