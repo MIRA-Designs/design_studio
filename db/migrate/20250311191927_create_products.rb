@@ -8,7 +8,7 @@ class CreateProducts < ActiveRecord::Migration[8.0]
       t.string :size, limit: 10
       t.decimal :mrp, precision: 7, scale: 2
       t.decimal :discount, precision: 7, scale: 2
-      t.decimal :rating, precision: 1, scale: 1
+      t.decimal :rating, precision: 2, scale: 1
 
       t.timestamps
     end

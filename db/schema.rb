@@ -11,6 +11,9 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2025_03_20_113837) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -57,7 +60,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_20_113837) do
     t.string "size", limit: 10
     t.decimal "mrp", precision: 7, scale: 2
     t.decimal "discount", precision: 7, scale: 2
-    t.decimal "rating", precision: 1, scale: 1
+    t.decimal "rating", precision: 2, scale: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
