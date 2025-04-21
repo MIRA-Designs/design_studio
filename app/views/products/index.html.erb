@@ -17,4 +17,6 @@
   <% end %>
 </div>
 
-<%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+<div class="pag-bar mt-5 pt-5">
+  <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+</div>
