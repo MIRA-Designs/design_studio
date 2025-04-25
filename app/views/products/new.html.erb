@@ -2,7 +2,9 @@
 
 <div class="flex justify-between items-center mb-6">
   <h1 class="text-3xl font-bold text-gray-800">New product</h1>
-  <%= link_to "Back to products", products_path, class: "inline-block bg-red-400 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300" %>
+  <%= link_to "← Back to Products",
+              products_path,
+              class: "btn-back" %>
 </div>
 
 <%= render "form", product: @product %>

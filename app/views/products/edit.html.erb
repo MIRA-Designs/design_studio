@@ -3,8 +3,13 @@
 <h1 class="text-3xl font-bold text-gray-900 mb-6 animate-fade-in-up">Edit</h1>
 
 <div class="mt-6 space-x-4">
-  <%= link_to "Back to products", products_path, class: "inline-block bg-red-400 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300" %>
-  <%= link_to "Show this product", @product, class: "text-orange-600 hover:text-orange-700 font-medium transition duration-300 transform hover:scale-105 float-right" %>
+  <%= link_to "← Back to Products",
+              products_path,
+              class: "btn-back" %>
+  <%= link_to "🔍 Show this product",
+              @product,
+              class: "btn-show" %>
+
 </div>
 
 <%= render "form", product: @product %>
