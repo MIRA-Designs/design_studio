@@ -14,18 +14,25 @@ class ProductsController < ApplicationController
   # GET /products/new
   def new
     @product = Product.new
+    @variant = @product.variants.build
   end
 
   # GET /products/1/edit
   def edit
+    @variant = @product.primary_variant
   end
 
   # POST /products or /products.json
   def create
-    @product = Product.new(product_params)
+    @product = Product.new(product_params.except(:product_variant))
 
     respond_to do |format|
       if @product.save
+        # Handle associated variants
+        if product_params[:product_variant].present?
+          @product.variants.create(product_params[:product_variant])
+        end
+
         format.html { redirect_to @product, notice: "Product was successfully created." }
         format.json { render :show, status: :created, location: @product }
       else
@@ -38,7 +45,12 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1 or /products/1.json
   def update
     respond_to do |format|
-      if @product.update(product_params)
+      if @product.update(product_params.except(:product_variant))
+        # Handle associated variants
+        if product_params[:product_variant].present?
+          @product.primary_variant.update(product_params[:product_variant])
+        end
+
         format.html { redirect_to @product, notice: "Product was successfully updated." }
         format.json { render :show, status: :ok, location: @product }
       else
@@ -66,6 +78,9 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.expect(product: [ :title, :description, :category, :color, :size, :mrp, :discount, :rating, images: [] ])
+      params.require(:product).permit(
+        :name, :description, :brand, :category, :rating, images: [],
+        product_variant: [ :sku, :mrp, :price, :discount_percent, :size, :color, :stock_quantity, specs: {} ]
+      )
     end
 end

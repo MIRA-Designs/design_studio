@@ -1,0 +1,6 @@
+.form-product {
+    @apply max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg border border-gray-200 animate-fade-in;
+}
+.form-error-div {
+    @apply mb-4 p-4 border-l-4 border-red-500 bg-red-50 text-red-700 rounded-lg shadow-md animate-shake opacity-100 transition-all duration-300;
+}

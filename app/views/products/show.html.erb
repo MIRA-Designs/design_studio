@@ -3,12 +3,21 @@
 </p>
 
 <div class="mt-6 space-x-4">
-  <%= link_to "Edit this product", edit_product_path(@product), class: "text-blue-600 hover:text-blue-700 font-medium transition duration-300 transform hover:scale-105" %> |
-  <%= link_to "Destroy this product", @product, method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:text-red-700 font-medium transition duration-300 transform hover:scale-105" %>
-  <%= link_to "Back to products", products_path, class: "inline-block bg-red-400 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 float-right" %>
+  <%= link_to "Edit Product",
+              edit_product_path(@product),
+              class: "btn-edit" %>
+  <%= link_to "Delete Product",
+              @product,
+              data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this product?" },
+              class: "btn-delete" %>
+  <%= link_to "← Back to Products",
+              products_path,
+              class: "btn-back" %>
 </div>
 <br>
 
-<%= render @product, class: "animate-fade-in-up" %>
+<div class="bg-white shadow-md rounded-lg p-4 border border-gray-200">
+  <%= render @product, class: "animate-fade-in-up" %>
+</div>
 
 <br>

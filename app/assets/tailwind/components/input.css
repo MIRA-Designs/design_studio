@@ -1,0 +1,26 @@
+.input-field {
+    @apply w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm;
+}
+.text-field {
+    @apply w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2
+  focus:ring-orange-400 transition duration-200 transform hover:scale-105;
+}
+.text-area {
+    @apply w-full mt-1 border border-gray-300 rounded-lg p-3 shadow-sm focus:ring-2 
+  focus:ring-orange-400 transition duration-200 transform hover:scale-105;
+}
+.select-field {
+    @apply w-full mt-1 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm 
+    focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 
+    transition duration-200 transform hover:scale-105;
+}
+.file-field {
+    @apply block w-full mt-1 cursor-pointer bg-gray-100 rounded-lg border border-gray-300 
+    p-3 shadow-sm transition hover:bg-gray-200 file:bg-gray-600 file:text-white 
+    file:px-4 file:py-2 file:border-none file:rounded-md file:cursor-pointer 
+    hover:file:bg-gray-700;
+}
+.number-field {
+    @apply focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition duration-200 
+    transform hover:scale-105;
+}

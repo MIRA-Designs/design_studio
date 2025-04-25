@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_20_113837) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_25_055627) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,19 +52,37 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_20_113837) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "products", force: :cascade do |t|
-    t.string "title", null: false
-    t.text "description"
-    t.string "category"
+  create_table "product_variants", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.string "sku", null: false
+    t.decimal "mrp", precision: 10, scale: 2, null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.decimal "discount_percent", precision: 5, scale: 2
+    t.string "size"
     t.string "color"
-    t.string "size", limit: 10
-    t.decimal "mrp", precision: 7, scale: 2
-    t.decimal "discount", precision: 7, scale: 2
-    t.decimal "rating", precision: 2, scale: 1
+    t.integer "stock_quantity", default: 0
+    t.jsonb "specs", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["product_id", "size", "color"], name: "index_product_variants_on_product_id_and_size_and_color", unique: true
+    t.index ["product_id"], name: "index_product_variants_on_product_id"
+    t.index ["sku"], name: "index_product_variants_on_sku", unique: true
+    t.index ["specs"], name: "index_product_variants_on_specs", using: :gin
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.text "description"
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name", null: false
+    t.decimal "rating", precision: 2, scale: 1, default: "0.0"
+    t.string "brand"
+    t.index ["brand"], name: "index_products_on_brand"
+    t.index ["category"], name: "index_products_on_category"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "product_variants", "products"
 end
