@@ -25,19 +25,30 @@ class ProductsController < ApplicationController
   # POST /products or /products.json
   def create
     @product = Product.new(product_params.except(:product_variant))
+    @variant = @product.variants.build(product_params[:product_variant])
+
+    ActiveRecord::Base.transaction do
+      if @product.save
+        # Rollback if any variant is invalid
+        raise ActiveRecord::Rollback if @variant.invalid?
+      else
+        raise ActiveRecord::Rollback
+      end
+    end
 
     respond_to do |format|
-      if @product.save
-        # Handle associated variants
-        if product_params[:product_variant].present?
-          @product.variants.create(product_params[:product_variant])
-        end
-
+      if @product.persisted?
         format.html { redirect_to @product, notice: "Product was successfully created." }
         format.json { render :show, status: :created, location: @product }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        format.json do
+          errors = {
+            product: @product.errors,
+            product_variants: @variant.errors
+          }
+          render json: errors, status: :unprocessable_entity
+        end
       end
     end
   end

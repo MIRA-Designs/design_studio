@@ -7,8 +7,8 @@ class ProductVariant < ApplicationRecord
   before_save :price_from_discount
 
   validates :mrp, presence: true, numericality: { greater_than: 0 }
-  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :discount_percent, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
+  validates :discount_percent, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
+  validates :size, :color, presence: true
 
   def discount_amount
     mrp - price
