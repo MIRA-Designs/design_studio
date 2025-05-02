@@ -1,17 +1,6 @@
-<%= form_with(model: @product, class: "form-product") do |form| %>
-  <% if product.errors.any? %>
-    <div class="form-error-div">
-      <h2 class="font-semibold">
-        <%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:
-      </h2>
-      <ul class="mt-2 list-disc pl-5">
-        <% product.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= render partial: "layouts/error", locals: { errors: @product.errors, record: 'Product' } %>
 
+<%= form_with(model: @product, class: "form-product") do |form| %>
   <!-- Brand -->
   <div class="mb-4 animate-fade-in-up">
     <%= form.label :brand, "Brand", class: "block font-medium text-gray-700" %>
@@ -40,7 +29,7 @@
   <!-- Product Images Section -->
   <div class="mt-4">
     <div class="flex flex-wrap gap-2 mt-2">
-      <% @product.images.each do |image| %>
+      <% @product.persisted? && @product.images.each do |image| %>
         <%= image_tag image.variant(:thumb), alt: "Product Image", class: "w-24 h-24 object-cover rounded-md border border-gray-300" %>
       <% end %>
     </div>
@@ -60,7 +49,7 @@
   <%= form.label :rating, "Rating", class: "block font-medium text-gray-700 mb-1" %>
   <%= form.number_field :rating,
         in: 1.0..5.0,
-        step: 0.1,
+        step: 0.5,
         class: "input-field number-field" %>
 </div>
 
@@ -73,12 +62,6 @@
       <div class="mb-4">
         <%= variant_fields.label :sku, "SKU", class: "block font-medium text-gray-700" %>
         <%= variant_fields.text_field :sku, class: "input-field" %>
-      </div>
-
-      <!-- Price -->
-      <div class="mb-4">
-        <%= variant_fields.label :price, "Price (₹)", class: "block font-medium text-gray-700" %>
-        <%= variant_fields.text_field :price, class: "input-field" %>
       </div>
 
       <!-- MRP -->
