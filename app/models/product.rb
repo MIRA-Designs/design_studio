@@ -29,4 +29,21 @@ class Product < ApplicationRecord
     # Assuming the first variant is the primary one
     variants.first
   end
+
+  # Custom method to process and reattach images (new and existing)
+  def process_images(image_params)
+    # Reject params that are not valid integers (i.e., convert to 0), and map to valid IDs
+    existing_image_ids = image_params.reject { |param| param.to_s.to_i == 0 }.map { |param| param.to_i }
+
+    # Filter out any uploaded images (ActionDispatch::Http::UploadedFile objects)
+    new_images = image_params.select { |param| param.is_a?(ActionDispatch::Http::UploadedFile) }
+
+    # Reattach existing image IDs as image blobs
+    existing_image_ids.each do |image_id|
+      images.attach(ActiveStorage::Blob.find(image_id)) # Attach only valid IDs
+    end
+
+    # Attach new uploaded images
+    images.attach(new_images) unless new_images.empty?
+  end
 end

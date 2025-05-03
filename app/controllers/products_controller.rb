@@ -56,7 +56,9 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1 or /products/1.json
   def update
     respond_to do |format|
-      if @product.update(product_params.except(:product_variant))
+      if @product.update(product_params.except(:product_variant, :images))
+        @product.process_images(params[:product][:images])
+
         # Handle associated variants
         if product_params[:product_variant].present?
           @product.primary_variant.update(product_params[:product_variant])
@@ -77,6 +79,20 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to products_path, status: :see_other, notice: "Product was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  def delete_image
+    @product = Product.find(params[:product_id])
+    @image = @product.images.find(params[:image_id])
+    @image_id = @image.id
+
+    @image.purge
+
+    respond_to do |format|
+      format.html { redirect_to edit_product_path(@product), notice: "Image was successfully removed." }
+      format.turbo_stream
       format.json { head :no_content }
     end
   end
