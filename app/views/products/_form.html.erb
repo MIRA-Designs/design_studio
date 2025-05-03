@@ -1,6 +1,6 @@
-<%= render partial: "layouts/error", locals: { errors: @product.errors, record: 'Product' } %>
+<%= render partial: "layouts/error", locals: { errors: product.errors, record: 'Product' } %>
 
-<%= form_with(model: @product, class: "form-product") do |form| %>
+<%= form_with(model: product, class: "form-product") do |form| %>
   <!-- Brand -->
   <div class="mb-4 animate-fade-in-up">
     <%= form.label :brand, "Brand", class: "block font-medium text-gray-700" %>
@@ -27,31 +27,50 @@
   </div>
 
   <!-- Product Images Section -->
-  <div class="mt-4">
-    <div class="flex flex-wrap gap-2 mt-2">
-      <% @product.persisted? && @product.images.each do |image| %>
-        <%= image_tag image.variant(:thumb), alt: "Product Image", class: "w-24 h-24 object-cover rounded-md border border-gray-300" %>
-      <% end %>
+  <% if product.persisted? && product.images.attached? %>
+    <div class="mt-4">
+      <p class="font-medium text-gray-700 mb-2">Existing Images:</p>
+      <div class="flex flex-wrap gap-2">
+        <% product.images.each do |image| %>
+          <div id="product-image-<%= image.id %>" class="relative group">
+            <%= image_tag image.variant(:thumb), alt: "Product Image", class: "w-24 h-24 object-cover rounded-md border border-gray-300" %>
+
+            <!-- Hidden Checkbox -->
+            <%= check_box_tag "product[remove_image_ids][]", image.id, false,
+                class: "hidden", id: "remove_image_#{image.id}" %>
+
+            <!-- Icon Label -->
+            <label for="remove_image_#{image.id}" class="absolute top-0 right-0 bg-white bg-opacity-80 rounded-bl-md px-2 py-1 text-red-600 font-bold text-sm cursor-pointer hidden group-hover:block transition hover:bg-red-100">
+              <%= link_to "🗑️", product_delete_image_path(product, image_id: image.id),
+                                data: { turbo_method: :delete, turbo_confirm: "Delete this image?" },
+                                class: "text-red-500" %>
+            </label>
+
+            <!-- Hidden field to retain image if not removed -->
+            <%= hidden_field_tag "product[images][]", image.id %>
+          </div>
+        <% end %>
+      </div>
     </div>
-  </div>
+<% end %>
+
 
   <!-- Category -->
-<div class="mb-4 animate-fade-in-up">
-  <%= form.label :category, "Category", class: "block font-medium text-gray-700 mb-1" %>
-  <%= form.select :category, product.class::CATEGORIES,
-        { prompt: "Select a Category" },
-        class: "select-field" %>
-</div>
-
+  <div class="mb-4 animate-fade-in-up">
+    <%= form.label :category, "Category", class: "block font-medium text-gray-700 mb-1" %>
+    <%= form.select :category, product.class::CATEGORIES,
+          { prompt: "Select a Category" },
+          class: "select-field" %>
+  </div>
 
   <!-- Rating -->
-<div class="mb-4 animate-fade-in-up">
-  <%= form.label :rating, "Rating", class: "block font-medium text-gray-700 mb-1" %>
-  <%= form.number_field :rating,
-        in: 1.0..5.0,
-        step: 0.5,
-        class: "input-field number-field" %>
-</div>
+  <div class="mb-4 animate-fade-in-up">
+    <%= form.label :rating, "Rating", class: "block font-medium text-gray-700 mb-1" %>
+    <%= form.number_field :rating,
+          in: 1.0..5.0,
+          step: 0.1,
+          class: "input-field number-field" %>
+  </div>
 
   <!-- Variant Fields -->
   <fieldset class="mt-6 p-4 border rounded-lg shadow-inner bg-orange-50">

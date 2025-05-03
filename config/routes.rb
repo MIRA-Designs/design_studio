@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :products
+  resources :products do
+    delete "images/:image_id", to: "products#delete_image", as: :delete_image
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
