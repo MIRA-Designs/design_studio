@@ -55,15 +55,29 @@ class ProductsController < ApplicationController
 
   # PATCH/PUT /products/1 or /products/1.json
   def update
-    respond_to do |format|
-      if @product.update(product_params.except(:product_variant, :images))
+    # Assign attributes but don’t persist yet
+    @product.assign_attributes(product_params.except(:product_variant, :images))
+    @variant = @product.primary_variant
+
+    ActiveRecord::Base.transaction do
+      if @product.save
         @product.process_images(params[:product][:images])
 
         # Handle associated variants
         if product_params[:product_variant].present?
-          @product.primary_variant.update(product_params[:product_variant])
+          @variant.assign_attributes(product_params[:product_variant])
+          unless @variant.save
+            # Rollback if any variant is invalid
+            raise ActiveRecord::Rollback
+          end
         end
+      else
+        raise ActiveRecord::Rollback
+      end
+    end
 
+    respond_to do |format|
+      if @product.saved_changes.any?
         format.html { redirect_to @product, notice: "Product was successfully updated." }
         format.json { render :show, status: :ok, location: @product }
       else

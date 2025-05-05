@@ -1,21 +1,19 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
-  description: MyText
-  category: MyString
-  color: MyString
-  size: MyString
-  mrp: 9.99
-  discount: 9.99
-  rating: 9.99
+  name: My Product
+  description: "Sample description"
+  brand: BrandOne
+  category: men
+  rating: 4.0
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
 
 two:
-  title: MyString
-  description: MyText
-  category: MyString
-  color: MyString
-  size: MyString
-  mrp: 9.99
-  discount: 9.99
-  rating: 9.99
+  name: My Product 2
+  description: "Sample description 2"
+  brand: BrandTwo
+  category: kids
+  rating: 4.5
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
