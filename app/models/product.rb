@@ -9,7 +9,7 @@ class Product < ApplicationRecord
     attachable.variant :thumb, resize_to_limit: [ 100, 100 ]
   end
 
-  validates :name, :description, :brand, presence: true
+  validates :name, :brand, presence: true
   validates :category, inclusion: { in: CATEGORIES }
   validates :rating,
   numericality: {
@@ -32,6 +32,8 @@ class Product < ApplicationRecord
 
   # Custom method to process and reattach images (new and existing)
   def process_images(image_params)
+    return if image_params.blank?
+
     # Reject params that are not valid integers (i.e., convert to 0), and map to valid IDs
     existing_image_ids = image_params.reject { |param| param.to_s.to_i == 0 }.map { |param| param.to_i }
 
