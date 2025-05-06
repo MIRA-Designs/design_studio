@@ -1,3 +1,14 @@
+require "simplecov"
+SimpleCov.start "rails" do
+  coverage_dir "public/coverage"    # output directory
+  minimum_coverage 90               # fail if coverage < 90%
+  add_filter "/test/"               # ignore test files themselves
+  add_group "Models", "app/models"
+  add_group "Controllers", "app/controllers"
+  add_group "Jobs", "app/jobs"
+  add_group "Libraries", "lib"
+end
+
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"

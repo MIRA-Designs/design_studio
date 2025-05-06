@@ -84,6 +84,53 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
+  test "should not create product if product itself is invalid" do
+    assert_no_difference([ "Product.count", "ProductVariant.count" ]) do
+      post products_url, params: {
+        product: {
+          name: nil, # Invalid name
+          description: "Missing name",
+          brand: "NoNameBrand",
+          category: "toys",
+          rating: 2.5,
+          product_variant: {
+            sku: "VALIDSKU456",
+            mrp: "300.00",
+            price: "250.00",
+            stock_quantity: 5,
+            specs: {}
+          }
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+  end
+
+  test "should return JSON errors when creation fails" do
+    post products_url, params: {
+      product: {
+        name: nil, # Invalid name
+        description: "Invalid product",
+        brand: "FailBrand",
+        category: "fashion",
+        rating: 1.0,
+        product_variant: {
+          sku: nil, # Invalid SKU
+          mrp: "200.00",
+          price: "150.00",
+          stock_quantity: 0,
+          specs: {}
+        }
+      }
+    }, as: :json
+
+    assert_response :unprocessable_entity
+    json_response = JSON.parse(@response.body)
+    assert json_response["product"]["name"].include?("can't be blank")
+    assert json_response["product_variants"]["sku"].include?("can't be blank")
+  end
+
   test "should show product" do
     get product_url(@product)
     assert_response :success
@@ -158,5 +205,33 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unprocessable_entity
+  end
+
+  test "should delete image and redirect to edit page with html request" do
+    image = @product.images.attach(io: File.open("test/fixtures/files/sample.jpg"), filename: "sample.jpg", content_type: "image/jpeg").first
+
+    assert_difference("@product.images.count", -1) do
+      delete product_delete_image_url(@product, image_id: image.id), as: :html
+    end
+
+    assert_redirected_to edit_product_path(@product)
+    assert_equal "Image was successfully removed.", flash[:notice]
+  end
+
+  test "should respond with turbo stream when deleting image" do
+    image = @product.images.attach(io: File.open("test/fixtures/files/sample.jpg"), filename: "sample.jpg", content_type: "image/jpeg").first
+
+    delete product_delete_image_url(@product, image_id: image.id), as: :turbo_stream
+
+    assert_response :success
+    assert_match "turbo-stream", @response.body
+  end
+
+  test "should respond with no content when deleting image via JSON" do
+    image = @product.images.attach(io: File.open("test/fixtures/files/sample.jpg"), filename: "sample.jpg", content_type: "image/jpeg").first
+
+    delete product_delete_image_url(@product, image_id: image.id), as: :json
+
+    assert_response :no_content
   end
 end
