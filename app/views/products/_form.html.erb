@@ -41,7 +41,7 @@
 
             <!-- Icon Label -->
             <label for="remove_image_#{image.id}" class="absolute top-0 right-0 bg-white bg-opacity-80 rounded-bl-md px-2 py-1 text-red-600 font-bold text-sm cursor-pointer hidden group-hover:block transition hover:bg-red-100">
-              <%= link_to "🗑️", product_delete_image_path(product, image_id: image.id),
+              <%= link_to "🗑️", product_delete_image_url(product, image_id: image.id),
                                 data: { turbo_method: :delete, turbo_confirm: "Delete this image?" },
                                 class: "text-red-500" %>
             </label>

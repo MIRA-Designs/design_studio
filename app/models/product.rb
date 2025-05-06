@@ -35,7 +35,7 @@ class Product < ApplicationRecord
     return if image_params.blank?
 
     # Reject params that are not valid integers (i.e., convert to 0), and map to valid IDs
-    existing_image_ids = image_params.reject { |param| param.to_s.to_i == 0 }.map { |param| param.to_i }
+    existing_image_ids = image_params.reject { |param| param.to_s.to_i <= 0 }.map { |param| param.to_i }
 
     # Filter out any uploaded images (ActionDispatch::Http::UploadedFile objects)
     new_images = image_params.select { |param| param.is_a?(ActionDispatch::Http::UploadedFile) }
