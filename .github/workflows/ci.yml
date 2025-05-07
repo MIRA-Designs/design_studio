@@ -1,0 +1,102 @@
+name: Rails CI
+
+# Trigger on pushes to main or any feature branch, and on PRs targeting main
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # 1) Lint job with RuboCop
+  lint:
+    name: RuboCop Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.1
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libpq-dev
+          bundle install --jobs 4 --retry 3
+
+      - name: Run RuboCop
+        run: bundle exec rubocop --fail-level E
+
+  # 2) Test job with Minitest
+  test:
+    name: Minitest Suite
+    runs-on: ubuntu-latest
+    needs: lint
+
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD: password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: postgres://postgres:password@localhost:5432/test_db
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.1
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libpq-dev
+          bundle install --jobs 4 --retry 3
+
+      - name: Set up database
+        run: |
+          bin/rails db:create
+          bin/rails db:schema:load
+
+      - name: Run Minitest
+        run: bin/rails test
+  # 3) Security job with Brakeman
+  security:
+    name: Brakeman Scan
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.1
+          bundler-cache: true
+
+      - name: Install Brakeman
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Run Brakeman
+        run: bundle exec brakeman --exit-on-warnings
