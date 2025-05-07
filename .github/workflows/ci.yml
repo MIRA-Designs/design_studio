@@ -99,4 +99,4 @@ jobs:
         run: bundle install --jobs 4 --retry 3
 
       - name: Run Brakeman
-        run: bundle exec brakeman --exit-on-warnings
+        run: bundle exec brakeman --exit-on-warn
