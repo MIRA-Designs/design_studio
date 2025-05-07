@@ -49,4 +49,5 @@
 
 # simplecov coverage report
 public/coverage/
+public/security_report.html
 

@@ -1,0 +1,53 @@
+# Brakeman configuration file for Rails application security scanning
+
+# List of files or directories to skip during the scan
+ignored_files: []
+
+# List of specific Brakeman checks to run (empty = run all)
+# Available checks: https://brakemanscanner.org/docs/checks/
+checks: []
+
+# Skip scanning development-only gems
+skip_files: false
+skip_checks: []
+skip_libs: false
+skip_vendor: true
+skip_rails_admin: false
+skip_gems: false
+
+# Whether to perform scans on development environment code
+skip_dev: true
+
+# Ignore warnings with specific warning codes
+ignored_warnings: []
+
+# Report format: plain, html, json, csv, tabs, markdown, codeclimate
+output_formats:
+  - plain
+
+# Output file (if not specified on the command line)
+output_file: brakeman-report.txt
+
+# Enable or disable coloring in output
+color: true
+
+# Set to true to treat warnings as errors (exit non-zero)
+exit_on_warnings: false
+
+# Minimum confidence level (0 = all, 1 = medium+high, 2 = high only)
+minimum_confidence: 0
+
+# Run in quiet mode (less verbose output)
+quiet: false
+
+# Show progress while running
+report_progress: true
+
+# Path to baseline file (if you want to compare against a previous scan)
+baseline_file: ''
+
+# Ignore certain methods as mass assignment sanitizers (if needed)
+mass_assign_sanitizers: []
+
+# Custom configuration for other specific checks (can be left empty)
+custom_checks: {}
