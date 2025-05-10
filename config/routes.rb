@@ -1,7 +1,20 @@
 Rails.application.routes.draw do
+  resource :session
+  resources :users, only: [ :index, :show, :edit, :update, :destroy ]
+
+  resources :sessions, only: %i[new create destroy]
+  get    "/login",  to: "sessions#new"
+  post   "/login",  to: "sessions#create"
+  delete "/logout", to: "sessions#destroy", as: :logout
+
+  # Sign up
+  get  "/signup", to: "users#new",    as: :signup
+  post "/signup", to: "users#create"
+
   resources :products do
     delete "images/:image_id", to: "products#delete_image", as: :delete_image
   end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

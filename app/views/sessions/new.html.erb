@@ -1,0 +1,12 @@
+<% content_for :title, "Design Studio Login" %>
+
+<div class="max-w-md mx-auto mt-12 p-6 bg-white rounded-lg shadow-md">
+
+  <h1 class="text-2xl font-bold mb-6 text-center">Log in to your account</h1>
+  <%= render 'form' %>
+
+  <p class="mt-4 text-center text-sm text-gray-600">
+    Don’t have an account?
+    <%= link_to "Sign up", signup_path, class: "text-indigo-600 hover:text-indigo-800 cursor-pointer" %>
+  </p>
+</div>
