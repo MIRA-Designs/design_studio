@@ -1,0 +1,19 @@
+<% password_digest = BCrypt::Password.create("password") %>
+
+one:
+  email: one@example.com
+  password_digest: <%= password_digest %>
+  role: customer
+  metadata: { address: "123 Main St", phone: "555-1234" }
+
+two:
+  email: two@example.com
+  password_digest: <%= password_digest %>
+  role: customer
+  metadata: { address: "123 Main St", phone: "555-1234" }
+
+valid_user:
+  email: valid_user@example.com
+  password_digest: <%= BCrypt::Password.create("valid_password123") %>
+  role: customer
+  metadata: { address: "123 Main St", phone: "555-1234" }
